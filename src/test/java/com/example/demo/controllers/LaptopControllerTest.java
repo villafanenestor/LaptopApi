@@ -38,6 +38,7 @@ class LaptopControllerTest {
     }
 
     @Test
+    @DisplayName("Test hello method")
     void hello(){
         ResponseEntity<String> response = testRestTemplate.getForEntity("/saludo", String.class);
         assertEquals(200, response.getStatusCodeValue());
@@ -47,6 +48,7 @@ class LaptopControllerTest {
     }
 
     @Test
+    @DisplayName("Test Pedir todas las laptops")
     void findAll() {
         ResponseEntity<Laptop[]> response =
         testRestTemplate.getForEntity("/api/laptops", Laptop[].class);
@@ -58,7 +60,7 @@ class LaptopControllerTest {
         assertTrue(response.hasBody());
     }
 
-    @DisplayName("Comprobando creacion de una Laptop")
+    @DisplayName("Test creacion de una Laptop")
     @Test
     void create() {
         HttpHeaders headers = new HttpHeaders();
@@ -87,6 +89,7 @@ class LaptopControllerTest {
     }
 
     @Test
+    @DisplayName("Buscar por ID")
     void findOneById() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -117,6 +120,7 @@ class LaptopControllerTest {
     }
 
     @Test
+    @DisplayName("Test update laptop")
     void update() {
         HttpHeaders headers = new HttpHeaders();
 
@@ -180,8 +184,9 @@ class LaptopControllerTest {
                                 """;
         HttpEntity<String> resquest = new HttpEntity<>(laptopJson, headers);
         ResponseEntity<Laptop> response = testRestTemplate.exchange("/api/laptops", HttpMethod.POST, resquest, Laptop.class);
+        response = testRestTemplate.exchange("/api/laptops", HttpMethod.POST, resquest, Laptop.class);
         Laptop firstLaptop= response.getBody();
-        assertEquals(16, firstLaptop.getMemory());
+        assertEquals(2, firstLaptop.getId());
 
 
         testRestTemplate.delete("/api/laptops/1");
@@ -189,15 +194,42 @@ class LaptopControllerTest {
                 testRestTemplate.getForEntity("/api/laptops", Laptop[].class);
         List<Laptop> laptops = Arrays.asList(finalresponse.getBody());
         System.out.println("Laptos size " +laptops.size());
-        //assertTrue();
         assertEquals(200, finalresponse.getStatusCodeValue());
-        assertNotEquals(400, finalresponse.getStatusCodeValue());
-        assertTrue(finalresponse.hasBody());
-
+        assertEquals(2, laptops.get(0).getId());
 
     }
 
     @Test
+    @DisplayName("Eliminar todos los registros")
     void deleteAll() {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        String laptopJson = """
+                                {
+                                    "id": null,
+                                    "manufacture": "HP",
+                                    "model": "14BR2012",
+                                    "price": 2000000.0,
+                                    "inStock": true,
+                                    "memory": 16,
+                                    "storage": 250
+                                }
+                                """;
+        HttpEntity<String> resquest = new HttpEntity<>(laptopJson, headers);
+        ResponseEntity<Laptop> response = testRestTemplate.exchange("/api/laptops", HttpMethod.POST, resquest, Laptop.class);
+        response = testRestTemplate.exchange("/api/laptops", HttpMethod.POST, resquest, Laptop.class);
+        Laptop firstLaptop= response.getBody();
+        assertEquals(2, firstLaptop.getId());
+
+
+        testRestTemplate.delete("/api/laptops/");
+        ResponseEntity<Laptop[]> finalresponse =
+                testRestTemplate.getForEntity("/api/laptops", Laptop[].class);
+        List<Laptop> laptops = Arrays.asList(finalresponse.getBody());
+        System.out.println("Laptos size " +laptops.size());
+        assertEquals(200, finalresponse.getStatusCodeValue());
+        assertEquals(0, laptops.size());
     }
 }
