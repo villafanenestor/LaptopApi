@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
@@ -15,25 +16,15 @@ public class OpenAPIConfig {
 
 
     @Bean
-    public OpenAPI openApiConfig(){
-        return new OpenAPI().info(
-                myCostumInfo
-        );
+    public OpenAPI springShopOpenAPI() {
+        return new OpenAPI()
+                .info(new Info().title("Spring Boot Book API")
+                        .description("Spring shop sample application")
+                        .version("v1.0.0")
+                        .license(new License().name("Apache 2.0").url("http://springdoc.org")))
+                .externalDocs(new ExternalDocumentation()
+                        .description("SpringShop Wiki Documentation")
+                        .url("https://springshop.wiki.github.org/docs"));
     }
 
-
-
-
-
-    private Info myCostumInfo = new Info()
-            .title("Spring Boot API")
-            .description("Documentacion de API-REST de Laptops ")
-            .version("1.0")
-            .contact(new Contact());
-
-
-    private Contact myContact = new Contact()
-            .email("mass.nestor@gmail.com")
-            .name("Nestor Villafañe Mass Delevoper")
-            .url("https:/google.com");
 }
