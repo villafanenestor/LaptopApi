@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class LaptopControllerTest {
 
-
+    /*
     private TestRestTemplate testRestTemplate;
 
     //Inyeccion de dependencias
@@ -61,7 +61,7 @@ class LaptopControllerTest {
     }
 
 
-    /*
+
     @DisplayName("Test creacion de una Laptop")
     @Test
     void create() {
