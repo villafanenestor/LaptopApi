@@ -30,8 +30,8 @@ public class WebSecurityConfig {
         //declares which Page(URL) will have What access type
         httpSecurity.authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/swagger-ui/index.html").access("hasRole('USER')")
-                .antMatchers("/swagger-ui/index.html").hasRole("ADMIN")
+                .antMatchers("/swagger-ui/index.html", "/api/*").access("hasRole('USER')")
+                .antMatchers("/swagger-ui/index.html", "/api/*").hasRole("ADMIN")
                 //.antMatchers("/hello1").hasRole("USER")
                 .and()
                 // some more method calls
